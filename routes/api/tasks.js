@@ -62,7 +62,7 @@ router.post(
         task = await Task.findOneAndUpdate(
           { _id: req.params.id },
           { $set: taskFields },
-          { new: true, useFindAndModify: false }
+          { new: true }
         );
 
         return res.json(task);

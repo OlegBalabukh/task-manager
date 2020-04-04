@@ -3,9 +3,12 @@ const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+
+const auth = require('../../middleware/auth');
 const { check, validationResult } = require('express-validator');
 
 const User = require('../../models/User');
+const Task = require('../../models/Task');
 
 // @route     POST api/users
 // @desc      Register user
@@ -75,5 +78,22 @@ router.post(
     }
   }
 );
+
+// @route     DELETE api/user
+// @desc      Delete user and its tasks
+// @access    Private
+router.delete('/', auth, async (req, res) => {
+  try {
+    // Remove user
+    await User.findOneAndRemove({ _id: req.user.id });
+    // Remove user's tasks
+    await Task.deleteMany({ user: req.user.id });
+
+    res.json({ msg: 'User deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
 
 module.exports = router;
