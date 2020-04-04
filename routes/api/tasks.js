@@ -80,4 +80,18 @@ router.post(
   }
 );
 
+// @route     DELETE api/tasks/:id
+// @desc      Delete task
+// @access    Private
+router.delete('/:id', auth, async (req, res) => {
+  try {
+    await Task.findByIdAndDelete(req.params.id);
+
+    res.json({ msg: 'Task deleted' });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
+});
+
 module.exports = router;
