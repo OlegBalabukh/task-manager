@@ -11,3 +11,6 @@ export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export const LOGOUT = 'LOGOUT';
+
+export const GET_TASKS = 'GET_TASKS';
+export const TASKS_ERROR = 'TASKS_ERROR';
