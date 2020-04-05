@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { setAlert } from '../../actions/alert';
+import { createUser } from '../../actions/auth';
 
-const Signup = ({ setAlert }) => {
+const Signup = ({ setAlert, createUser }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -23,7 +24,7 @@ const Signup = ({ setAlert }) => {
     if (password !== password2) {
       setAlert('Passwords do not match', 'danger', 3000);
     } else {
-      console.log(formData);
+      createUser({ name, email, password });
     }
   };
 
@@ -81,6 +82,7 @@ const Signup = ({ setAlert }) => {
 
 Signup.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
 };
 
-export default connect(null, { setAlert })(Signup);
+export default connect(null, { setAlert, createUser })(Signup);
