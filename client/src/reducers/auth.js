@@ -3,6 +3,8 @@ import {
   SIGNUP_FAIL,
   USER_LOADED,
   AUTH_ERROR,
+  LOGIN_SUCCESS,
+  LOGIN_FAIL,
 } from '../actions/constants';
 
 const initialState = {
@@ -22,6 +24,7 @@ export default (state = initialState, { type, payload }) => {
         user: payload,
       };
     case SIGNUP_SUCCESS:
+    case LOGIN_SUCCESS:
       localStorage.setItem('token', payload.token);
       return {
         ...state,
@@ -31,6 +34,7 @@ export default (state = initialState, { type, payload }) => {
       };
     case SIGNUP_FAIL:
     case AUTH_ERROR:
+    case LOGIN_FAIL:
       localStorage.removeItem('token');
       return {
         ...state,

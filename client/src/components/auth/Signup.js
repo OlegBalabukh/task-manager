@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { setAlert } from '../../actions/alert';
 import { createUser } from '../../actions/auth';
 
-const Signup = ({ setAlert, createUser }) => {
+const Signup = ({ setAlert, createUser, isAuthenticated }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -27,6 +27,10 @@ const Signup = ({ setAlert, createUser }) => {
       createUser({ name, email, password });
     }
   };
+
+  if (isAuthenticated) {
+    return <Redirect to='/dashboard' />;
+  }
 
   return (
     <>
@@ -83,6 +87,11 @@ const Signup = ({ setAlert, createUser }) => {
 Signup.propTypes = {
   setAlert: PropTypes.func.isRequired,
   createUser: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool,
 };
 
-export default connect(null, { setAlert, createUser })(Signup);
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated,
+});
+
+export default connect(mapStateToProps, { setAlert, createUser })(Signup);
