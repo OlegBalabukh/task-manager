@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const Signup = () => {
+import { setAlert } from '../../actions/alert';
+
+const Signup = ({ setAlert }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -17,7 +21,7 @@ const Signup = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      console.log('Passwords do not match');
+      setAlert('Passwords do not match', 'danger', 3000);
     } else {
       console.log(formData);
     }
@@ -37,7 +41,6 @@ const Signup = () => {
             name='name'
             value={name}
             onChange={(e) => onChange(e)}
-            required
           />
         </div>
         <div className='form-group'>
@@ -47,7 +50,6 @@ const Signup = () => {
             name='email'
             value={email}
             onChange={(e) => onChange(e)}
-            required
           />
         </div>
         <div className='form-group'>
@@ -77,4 +79,8 @@ const Signup = () => {
   );
 };
 
-export default Signup;
+Signup.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+};
+
+export default connect(null, { setAlert })(Signup);
