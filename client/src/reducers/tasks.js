@@ -1,4 +1,4 @@
-import { GET_TASKS, TASKS_ERROR } from '../actions/constants';
+import { GET_TASKS, TASKS_ERROR, CLEAR_TASKS } from '../actions/constants';
 
 const initialState = {
   userTasks: [],
@@ -18,6 +18,13 @@ export default (state = initialState, { type, payload }) => {
       return {
         ...state,
         error: payload,
+        loading: false,
+      };
+
+    case CLEAR_TASKS:
+      return {
+        ...state,
+        userTasks: [],
         loading: false,
       };
     default:
