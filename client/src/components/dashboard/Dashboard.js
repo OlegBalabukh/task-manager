@@ -1,26 +1,51 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getUserTasks } from '../../actions/tasks';
+import Spinner from '../layout/Spinner';
 
-const Dashboard = ({ getUserTasks, auth, tasks }) => {
+const Dashboard = ({
+  getUserTasks,
+  auth: { user },
+  tasks: { userTasks, loading },
+}) => {
   useEffect(() => {
     getUserTasks();
   }, []);
 
-  return <div>Dashboard</div>;
+  return loading && userTasks.length === 0 ? (
+    <Spinner />
+  ) : (
+    <>
+      <h1 className='large text-primary'>Dashboard</h1>
+      <p className='lead'>
+        <i className='fas fa-user' /> Welcome {user && user.name}
+      </p>
+      {userTasks.length ? (
+        <>has</>
+      ) : (
+        <>
+          <p>You have not yet added any tasks, please add the first one</p>
+          <Link to='/create-task' className='btn btn-primary my-1'>
+            Create Task
+          </Link>
+        </>
+      )}
+    </>
+  );
 };
 
 Dashboard.propTypes = {
   getUserTasks: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  tasks: PropTypes.array.isRequired,
+  tasks: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  tasks: state.tasks.userTasks,
+  tasks: state.tasks,
 });
 
 export default connect(mapStateToProps, { getUserTasks })(Dashboard);
