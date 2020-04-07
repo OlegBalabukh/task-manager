@@ -8,6 +8,7 @@ import setAuthToken from './utils/setAuthToken';
 
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
+import NotFoundPage from './components/layout/NotFoundPage';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
 import Alert from './components/layout/Alert';
@@ -36,6 +37,7 @@ const App = () => {
               <Route exact path='/signup' component={Signup} />
               <Route exact path='/login' component={Login} />
               <PrivateRoute exact path='/dashboard' component={Dashboard} />
+              <Route path='/' component={NotFoundPage} />
             </Switch>
           </section>
         </>
