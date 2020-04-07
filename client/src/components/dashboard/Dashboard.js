@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 import { getUserTasks } from '../../actions/tasks';
 import Spinner from '../layout/Spinner';
+import Task from './Task';
 
 const Dashboard = ({
   getUserTasks,
@@ -24,7 +25,11 @@ const Dashboard = ({
         <i className='fas fa-user' /> Welcome {user && user.name}
       </p>
       {userTasks.length ? (
-        <>has</>
+        <>
+          <h5>TASKS</h5>
+          {userTasks.length > 0 &&
+            userTasks.map((task) => <Task key={task.date} task={task} />)}
+        </>
       ) : (
         <>
           <p>You have not yet added any tasks, please add the first one</p>

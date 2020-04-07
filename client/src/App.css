@@ -230,6 +230,56 @@ button {
   text-align: center;
 }
 
+/* Task */
+.header {
+  height: 50px;
+  box-sizing: content-box;
+  display: flex;
+  /* flex-direction: row; */
+  box-shadow: 0 0 4px gray;
+  cursor: pointer;
+  margin: 8px 0 8px 0;
+}
+
+.focusTask {
+  height: 50px;
+  box-sizing: content-box;
+  display: flex;
+  box-shadow: 0 0 4px #007300;
+  background-color: #bddebd;
+  cursor: pointer;
+  margin: 8px 0 8px 0;
+}
+
+.taskName {
+  padding: 13px 0 13px 0;
+  margin-left: 15px;
+  display: flex;
+  font-size: 1.1em;
+}
+
+.date {
+  padding: 13px 0 13px 0;
+  margin-left: auto;
+  margin-right: 15px;
+  font-size: 0.8em;
+  color: #737373;
+}
+
+.description {
+  margin-left: 15px;
+  padding-bottom: 15px;
+}
+
+.descHeader {
+  font-size: 1.5em;
+}
+
+.task-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
