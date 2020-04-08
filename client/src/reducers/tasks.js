@@ -4,6 +4,7 @@ import {
   CLEAR_TASKS,
   TASK_ADDED,
   TASK_UPDATED,
+  TASK_DELETED,
 } from '../actions/constants';
 
 const initialState = {
@@ -41,10 +42,14 @@ export default (state = initialState, { type, payload }) => {
     case TASK_UPDATED:
       return {
         ...state,
-        userTasks: [
-          payload,
-          ...state.userTasks.filter((task) => task._id !== payload._id),
-        ],
+        userTasks: state.userTasks.map((task) => {
+          return task._id === payload._id ? payload : task;
+        }),
+      };
+    case TASK_DELETED:
+      return {
+        ...state,
+        userTasks: payload,
       };
     default:
       return state;

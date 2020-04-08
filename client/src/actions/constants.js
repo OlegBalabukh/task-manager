@@ -17,3 +17,4 @@ export const CLEAR_TASKS = 'CLEAR_TASKS';
 export const TASKS_ERROR = 'TASKS_ERROR';
 export const TASK_ADDED = 'TASK_ADDED';
 export const TASK_UPDATED = 'TASK_UPDATED';
+export const TASK_DELETED = 'TASK_DELETED';

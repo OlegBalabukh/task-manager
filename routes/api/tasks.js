@@ -32,13 +32,9 @@ router.post(
   [
     auth,
     [
-      check('name', 'Name is required')
-        .not()
-        .isEmpty(),
-      check('description', 'Description is required')
-        .not()
-        .isEmpty()
-    ]
+      check('name', 'Name is required').not().isEmpty(),
+      check('description', 'Description is required').not().isEmpty(),
+    ],
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -87,7 +83,9 @@ router.delete('/:id', auth, async (req, res) => {
   try {
     await Task.findByIdAndDelete(req.params.id);
 
-    res.json({ msg: 'Task deleted' });
+    const tasks = await Task.find({ user: req.user.id }).sort({ date: -1 });
+
+    res.json(tasks);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');

@@ -9,7 +9,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useStyles from './MaterialStyles';
 
 import InputForm from './InputForm';
-import { updateTask } from '../../actions/tasks';
+import { updateTask, deleteTask } from '../../actions/tasks';
 
 const theme = createMuiTheme({
   palette: {
@@ -17,7 +17,7 @@ const theme = createMuiTheme({
   },
 });
 
-const Task = ({ task, updateTask }) => {
+const Task = ({ task, updateTask, deleteTask }) => {
   const [isFocused, setFocus] = useState(false);
   const [edit, setEdit] = useState(false);
   const classes = useStyles();
@@ -30,6 +30,11 @@ const Task = ({ task, updateTask }) => {
   const handleEditedTask = (edited) => {
     setEdit(false);
     updateTask(edited);
+  };
+
+  const onDelete = () => {
+    setEdit(false);
+    deleteTask(_id);
   };
 
   const onEdit = () => setEdit(true);
@@ -60,6 +65,7 @@ const Task = ({ task, updateTask }) => {
               variant='outlined'
               color='secondary'
               className={classes.button}
+              onClick={onDelete}
             >
               DELETE
             </Button>
@@ -92,6 +98,7 @@ const Task = ({ task, updateTask }) => {
 Task.propTypes = {
   task: PropTypes.object.isRequired,
   updateTask: PropTypes.func.isRequired,
+  deleteTask: PropTypes.func.isRequired,
 };
 
-export default connect(null, { updateTask })(Task);
+export default connect(null, { updateTask, deleteTask })(Task);
