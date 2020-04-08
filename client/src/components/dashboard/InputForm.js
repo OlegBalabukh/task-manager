@@ -9,7 +9,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
 import useStyles from './MaterialStyles';
 
-const InputForm = ({ id, name, description, edit, cancel, handleInput }) => {
+const InputForm = ({ id, name, description, edit, closeForm, handleInput }) => {
   const classes = useStyles();
   const initErrorMessages = { name: false, description: false };
   const confirmButton = id ? 'Edit Task' : 'Add Task';
@@ -27,7 +27,7 @@ const InputForm = ({ id, name, description, edit, cancel, handleInput }) => {
   };
 
   const cancelEdit = () => {
-    cancel();
+    closeForm();
     setError(initErrorMessages);
   };
 
@@ -109,10 +109,10 @@ const InputForm = ({ id, name, description, edit, cancel, handleInput }) => {
 };
 
 InputForm.propTypes = {
-  id: PropTypes.string.isRequired,
+  id: PropTypes.string,
   name: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
-  cancel: PropTypes.func.isRequired,
+  closeForm: PropTypes.func.isRequired,
   handleInput: PropTypes.func.isRequired,
   edit: PropTypes.bool.isRequired,
 };

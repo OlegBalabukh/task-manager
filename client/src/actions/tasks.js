@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { GET_TASKS, TASKS_ERROR, ADD_TASK } from './constants';
+import { GET_TASKS, TASKS_ERROR, TASK_ADDED, TASK_UPDATED } from './constants';
 
 // Get current user's tasks
 export const getUserTasks = () => async (dispatch) => {
@@ -31,7 +31,31 @@ export const addTask = ({ name, description }) => async (dispatch) => {
     const res = await axios.post('/api/tasks', body, config);
 
     dispatch({
-      type: ADD_TASK,
+      type: TASK_ADDED,
+      payload: res.data,
+    });
+  } catch (err) {
+    dispatch({
+      type: TASKS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
+export const updateTask = ({ _id, name, description }) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const body = JSON.stringify({ name, description });
+
+  try {
+    const res = await axios.post(`/api/tasks/${_id}`, body, config);
+
+    dispatch({
+      type: TASK_UPDATED,
       payload: res.data,
     });
   } catch (err) {

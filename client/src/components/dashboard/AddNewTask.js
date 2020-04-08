@@ -13,23 +13,23 @@ const AddNewTask = ({ addTask }) => {
 
   const [edit, setEdit] = React.useState(false);
 
-  const handleOpen = () => {
+  const openForm = () => {
     setEdit(true);
   };
 
-  const handleClose = () => {
+  const closeForm = () => {
     setEdit(false);
   };
 
   const handleNewTask = (newTask) => {
     addTask(newTask);
-    handleClose();
+    closeForm();
   };
 
   return (
     <div>
       <Button
-        onClick={handleOpen}
+        onClick={openForm}
         className={classes.newTaskButton}
         variant='outlined'
         color='secondary'
@@ -43,7 +43,7 @@ const AddNewTask = ({ addTask }) => {
           edit={edit}
           description={initInput.description}
           handleInput={handleNewTask}
-          cancelConfirmation={handleClose}
+          closeForm={closeForm}
         />
       )}
     </div>

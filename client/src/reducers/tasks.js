@@ -2,7 +2,8 @@ import {
   GET_TASKS,
   TASKS_ERROR,
   CLEAR_TASKS,
-  ADD_TASK,
+  TASK_ADDED,
+  TASK_UPDATED,
 } from '../actions/constants';
 
 const initialState = {
@@ -32,10 +33,18 @@ export default (state = initialState, { type, payload }) => {
         userTasks: [],
         loading: false,
       };
-    case ADD_TASK:
+    case TASK_ADDED:
       return {
         ...state,
         userTasks: [payload, ...state.userTasks],
+      };
+    case TASK_UPDATED:
+      return {
+        ...state,
+        userTasks: [
+          payload,
+          ...state.userTasks.filter((task) => task._id !== payload._id),
+        ],
       };
     default:
       return state;

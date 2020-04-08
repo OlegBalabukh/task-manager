@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import Moment from 'react-moment';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
 import { green } from '@material-ui/core/colors';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useStyles from './MaterialStyles';
+
+import InputForm from './InputForm';
+import { updateTask } from '../../actions/tasks';
 
 const theme = createMuiTheme({
   palette: {
@@ -12,13 +17,23 @@ const theme = createMuiTheme({
   },
 });
 
-const Task = ({ task: { name, description, date } }) => {
+const Task = ({ task, updateTask }) => {
   const [isFocused, setFocus] = useState(false);
+  const [edit, setEdit] = useState(false);
   const classes = useStyles();
+  const { _id, name, description, date } = task;
 
   const handleShow = () => {
     setFocus(!isFocused);
   };
+
+  const handleEditedTask = (edited) => {
+    setEdit(false);
+    updateTask(edited);
+  };
+
+  const onEdit = () => setEdit(true);
+  const closeForm = () => setEdit(false);
 
   return (
     <>
@@ -37,6 +52,7 @@ const Task = ({ task: { name, description, date } }) => {
               variant='outlined'
               color='default'
               className={classes.button}
+              onClick={onEdit}
             >
               EDIT
             </Button>
@@ -57,10 +73,25 @@ const Task = ({ task: { name, description, date } }) => {
               </Button>
             </ThemeProvider>
           </div>
+          {edit && (
+            <InputForm
+              id={_id}
+              name={name}
+              edit={edit}
+              description={description}
+              handleInput={handleEditedTask}
+              closeForm={closeForm}
+            />
+          )}
         </div>
       )}
     </>
   );
 };
 
-export default Task;
+Task.propTypes = {
+  task: PropTypes.object.isRequired,
+  updateTask: PropTypes.func.isRequired,
+};
+
+export default connect(null, { updateTask })(Task);
