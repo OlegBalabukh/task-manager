@@ -42,12 +42,13 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, description } = req.body;
+    const { name, description, done } = req.body;
 
     // Build task object
     const taskFields = {};
     taskFields.user = req.user.id;
     if (name) taskFields.name = name;
+    if (typeof done === 'boolean') taskFields.done = done;
     if (description) taskFields.description = description;
 
     try {

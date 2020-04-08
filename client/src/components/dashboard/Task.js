@@ -21,7 +21,8 @@ const Task = ({ task, updateTask, deleteTask }) => {
   const [isFocused, setFocus] = useState(false);
   const [edit, setEdit] = useState(false);
   const classes = useStyles();
-  const { _id, name, description, date } = task;
+  const { _id, name, description, date, done } = task;
+  const statusButton = done ? 'Open' : 'Close';
 
   const handleShow = () => {
     setFocus(!isFocused);
@@ -30,6 +31,10 @@ const Task = ({ task, updateTask, deleteTask }) => {
   const handleEditedTask = (edited) => {
     setEdit(false);
     updateTask(edited);
+  };
+
+  const changeTaskStatus = () => {
+    updateTask({ ...task, done: !done });
   };
 
   const onDelete = () => {
@@ -44,6 +49,7 @@ const Task = ({ task, updateTask, deleteTask }) => {
     <>
       <div className={isFocused ? 'focusTask' : 'header'} onClick={handleShow}>
         <h6 className='taskName'>{name}</h6>
+        {done && <span className='badge-closed'>closed</span>}
         <div className='date'>
           <Moment date={date} format='YYYY-MM-DD hh:mm:ss' />
         </div>
@@ -53,14 +59,16 @@ const Task = ({ task, updateTask, deleteTask }) => {
           <div className='descHeader'>Description</div>
           <div>{description}</div>
           <div className='task-buttons'>
-            <Button
-              variant='outlined'
-              color='default'
-              className={classes.button}
-              onClick={onEdit}
-            >
-              EDIT
-            </Button>
+            {!done && (
+              <Button
+                variant='outlined'
+                color='default'
+                className={classes.button}
+                onClick={onEdit}
+              >
+                EDIT
+              </Button>
+            )}
             <Button
               variant='outlined'
               color='secondary'
@@ -74,8 +82,9 @@ const Task = ({ task, updateTask, deleteTask }) => {
                 variant='outlined'
                 color='primary'
                 className={classes.button}
+                onClick={changeTaskStatus}
               >
-                COMPLETE
+                {statusButton}
               </Button>
             </ThemeProvider>
           </div>

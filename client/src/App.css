@@ -284,6 +284,16 @@ button {
   justify-content: flex-end;
 }
 
+.badge-closed {
+  background-color: var(--success-color);
+  color: #fff;
+  margin: 12px 0px 20px 5px;
+  font-size: 0.75rem;
+  padding: 0px 5px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
 /* Mobile Styles */
 @media (max-width: 700px) {
   .container {
