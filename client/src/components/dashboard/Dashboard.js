@@ -17,7 +17,7 @@ const Dashboard = ({
     getUserTasks();
   }, []);
 
-  return loading && userTasks.length === 0 ? (
+  return userTasks.length === 0 ? (
     <Spinner />
   ) : (
     <>
