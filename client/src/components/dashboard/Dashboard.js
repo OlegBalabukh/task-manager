@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { getUserTasks } from '../../actions/tasks';
 import Spinner from '../layout/Spinner';
 import Task from './Task';
+import AddNewTask from './AddNewTask';
 
 const Dashboard = ({
   getUserTasks,
@@ -26,7 +27,9 @@ const Dashboard = ({
       </p>
       {userTasks.length ? (
         <>
-          <h5>TASKS</h5>
+          <span className='text-center'>
+            <AddNewTask />
+          </span>
           {userTasks.length > 0 &&
             userTasks.map((task) => <Task key={task.date} task={task} />)}
         </>

@@ -15,3 +15,4 @@ export const LOGOUT = 'LOGOUT';
 export const GET_TASKS = 'GET_TASKS';
 export const CLEAR_TASKS = 'CLEAR_TASKS';
 export const TASKS_ERROR = 'TASKS_ERROR';
+export const ADD_TASK = 'ADD_TASK';
