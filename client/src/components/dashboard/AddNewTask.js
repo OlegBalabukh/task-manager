@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
-import InputForm from './InputForm';
+import TaskForm from './TaskForm';
 import { addTask } from '../../actions/tasks';
 import useStyles from './MaterialStyles';
 
@@ -37,7 +37,7 @@ const AddNewTask = ({ addTask }) => {
         ADD NEW TASK
       </Button>
       {edit && (
-        <InputForm
+        <TaskForm
           id={initInput.id}
           name={initInput.name}
           edit={edit}

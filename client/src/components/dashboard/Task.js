@@ -8,7 +8,8 @@ import { green } from '@material-ui/core/colors';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useStyles from './MaterialStyles';
 
-import InputForm from './InputForm';
+import TaskForm from './TaskForm';
+import ShareForm from './ShareForm';
 import { updateTask, deleteTask } from '../../actions/tasks';
 
 const theme = createMuiTheme({
@@ -20,6 +21,7 @@ const theme = createMuiTheme({
 const Task = ({ task, updateTask, deleteTask }) => {
   const [isFocused, setFocus] = useState(false);
   const [edit, setEdit] = useState(false);
+  const [share, setShare] = useState(false);
   const classes = useStyles();
   const { _id, name, description, date, done } = task;
   const statusButton = done ? 'Open' : 'Close';
@@ -33,6 +35,12 @@ const Task = ({ task, updateTask, deleteTask }) => {
     updateTask(edited);
   };
 
+  const handleSharedEmail = (email) => {
+    console.log(email);
+    setShare(false);
+    // shareTask(_id, email);
+  };
+
   const changeTaskStatus = () => {
     updateTask({ ...task, done: !done });
   };
@@ -42,8 +50,12 @@ const Task = ({ task, updateTask, deleteTask }) => {
     deleteTask(_id, name);
   };
 
+  const onShare = () => setShare(true);
   const onEdit = () => setEdit(true);
-  const closeForm = () => setEdit(false);
+  const closeForm = () => {
+    setEdit(false);
+    setShare(false);
+  };
 
   return (
     <>
@@ -77,6 +89,14 @@ const Task = ({ task, updateTask, deleteTask }) => {
             >
               DELETE
             </Button>
+            <Button
+              variant='outlined'
+              color='default'
+              className={classes.button}
+              onClick={onShare}
+            >
+              Share with
+            </Button>
             <ThemeProvider theme={theme}>
               <Button
                 variant='outlined'
@@ -89,12 +109,19 @@ const Task = ({ task, updateTask, deleteTask }) => {
             </ThemeProvider>
           </div>
           {edit && (
-            <InputForm
+            <TaskForm
               id={_id}
               name={name}
               edit={edit}
               description={description}
               handleInput={handleEditedTask}
+              closeForm={closeForm}
+            />
+          )}
+          {share && (
+            <ShareForm
+              share={share}
+              handleInput={handleSharedEmail}
               closeForm={closeForm}
             />
           )}
