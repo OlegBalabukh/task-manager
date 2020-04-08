@@ -7,8 +7,8 @@ import {
   TASK_UPDATED,
   TASK_DELETED,
 } from './constants';
+import { setAlert } from './alert';
 
-// Get current user's tasks
 export const getUserTasks = () => async (dispatch) => {
   try {
     const res = await axios.get('/api/tasks');
@@ -40,6 +40,13 @@ export const addTask = ({ name, description }) => async (dispatch) => {
       type: TASK_ADDED,
       payload: res.data,
     });
+    dispatch(
+      setAlert(
+        `${name.toUpperCase()} added to your task list!`,
+        'success',
+        3000
+      )
+    );
   } catch (err) {
     dispatch({
       type: TASKS_ERROR,
@@ -64,6 +71,9 @@ export const updateTask = ({ _id, name, description }) => async (dispatch) => {
       type: TASK_UPDATED,
       payload: res.data,
     });
+    dispatch(
+      setAlert(`${res.data.name.toUpperCase()} updated!`, 'success', 3000)
+    );
   } catch (err) {
     dispatch({
       type: TASKS_ERROR,
@@ -72,13 +82,14 @@ export const updateTask = ({ _id, name, description }) => async (dispatch) => {
   }
 };
 
-export const deleteTask = (id) => async (dispatch) => {
+export const deleteTask = (id, name) => async (dispatch) => {
   try {
     const res = await axios.delete(`/api/tasks/${id}`);
     dispatch({
       type: TASK_DELETED,
       payload: res.data,
     });
+    dispatch(setAlert(`${name.toUpperCase()} deleted!`, 'success', 3000));
   } catch (err) {
     dispatch({
       type: TASKS_ERROR,

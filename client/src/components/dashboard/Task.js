@@ -34,7 +34,7 @@ const Task = ({ task, updateTask, deleteTask }) => {
 
   const onDelete = () => {
     setEdit(false);
-    deleteTask(_id);
+    deleteTask(_id, name);
   };
 
   const onEdit = () => setEdit(true);
