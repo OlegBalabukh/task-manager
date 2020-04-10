@@ -13,11 +13,29 @@ router.get('/', auth, async (req, res) => {
   try {
     const tasks = await Task.find({ user: req.user.id }).sort({ date: -1 });
 
+    const sharedTasks = await Task.find({ 'access.user': req.user.id }).select(
+      `-access`
+    );
+
+    const shared = await Promise.all(
+      sharedTasks.map(async ({ done, _id, user, name, description, date }) => {
+        const whoShared = await User.findById(user);
+        return {
+          done,
+          _id,
+          name,
+          description,
+          date,
+          sharedBy: whoShared.name,
+        };
+      })
+    );
+
     if (!tasks.length) {
       return res.status(400).json({ msg: 'There are no tasks for this user' });
     }
 
-    res.json(tasks);
+    res.json(tasks.concat(shared));
   } catch (err) {
     console.error(err);
     res.status(500).send('Server Error');
@@ -70,6 +88,59 @@ router.post(
       await task.save();
 
       res.json(task);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route     POST api/tasks/share/:id
+// @desc      Share task with another user
+// @access    Private
+router.post(
+  '/share/:id',
+  [auth, [check('email', 'Email is required').not().isEmpty()]],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+      let task = await Task.findById(req.params.id);
+      const getAccessUser = await User.findOne({
+        email: req.body.email,
+      }).select('id, name');
+
+      if (!getAccessUser) {
+        return res
+          .status(400)
+          .json({ msg: 'This user is not registered in the system' });
+      }
+
+      // Build a shared user object
+      const newShare = {
+        user: getAccessUser.id,
+      };
+
+      // Check if task has already been shared to this user
+      const alreadyShared =
+        task.access.filter(
+          ({ user }) => user.toString() === getAccessUser.id.toString()
+        ).length > 0;
+
+      if (alreadyShared) {
+        return res
+          .status(400)
+          .json({ msg: 'This task was already shared with this user' });
+      }
+
+      task.access.unshift(newShare);
+
+      await task.save();
+
+      res.json({ msg: `Task successfully shared to ${getAccessUser.name}` });
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server Error');

@@ -17,6 +17,19 @@ const TaskSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  access: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'users',
+        required: true,
+      },
+      date: {
+        type: Date,
+        default: Date.now,
+      },
+    },
+  ],
   date: {
     type: Date,
     default: Date.now,
