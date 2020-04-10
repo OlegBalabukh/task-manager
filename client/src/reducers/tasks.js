@@ -8,7 +8,7 @@ import {
 } from '../actions/constants';
 
 const initialState = {
-  userTasks: [],
+  userTasks: null,
   loading: true,
   error: {},
 };
@@ -31,13 +31,13 @@ export default (state = initialState, { type, payload }) => {
     case CLEAR_TASKS:
       return {
         ...state,
-        userTasks: [],
+        userTasks: null,
         loading: false,
       };
     case TASK_ADDED:
       return {
         ...state,
-        userTasks: [payload, ...state.userTasks],
+        userTasks: state.userTasks ? [payload, ...state.userTasks] : [payload],
       };
     case TASK_UPDATED:
       return {

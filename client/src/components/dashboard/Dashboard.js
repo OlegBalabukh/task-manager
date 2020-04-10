@@ -1,44 +1,49 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 
 import { getUserTasks } from '../../actions/tasks';
 import Spinner from '../layout/Spinner';
 import Task from './Task';
 import AddNewTask from './AddNewTask';
 
-const Dashboard = ({
-  getUserTasks,
-  auth: { user },
-  tasks: { userTasks, loading },
-}) => {
+const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
   useEffect(() => {
     getUserTasks();
   }, []);
 
-  return userTasks.length === 0 ? (
-    <Spinner />
-  ) : (
+  const [showSpinner, setShowSpinner] = useState(true);
+  setTimeout(() => setShowSpinner(false), 800);
+
+  const welcomeBlock = (
     <>
       <h1 className='large text-primary'>Dashboard</h1>
       <p className='lead'>
         <i className='fas fa-user' /> Welcome {user && user.name}
       </p>
-      {userTasks.length ? (
-        <>
-          <span className='text-center'>
-            <AddNewTask />
-          </span>
-          {userTasks.length > 0 &&
-            userTasks.map((task) => <Task key={task.date} task={task} />)}
-        </>
+      {!userTasks && (
+        <p>You have not yet added any tasks, please add the first one</p>
+      )}
+      <span className='text-center'>
+        <AddNewTask />
+      </span>
+    </>
+  );
+
+  return (
+    <>
+      {userTasks === null ? (
+        showSpinner ? (
+          <Spinner />
+        ) : (
+          welcomeBlock
+        )
       ) : (
         <>
-          <p>You have not yet added any tasks, please add the first one</p>
-          <Link to='/create-task' className='btn btn-primary my-1'>
-            Create Task
-          </Link>
+          {welcomeBlock}
+          {userTasks.map((task) => (
+            <Task key={task.date} task={task} />
+          ))}
         </>
       )}
     </>
