@@ -136,6 +136,14 @@ img {
   color: #fff;
 }
 
+.alert-absolute {
+  position: absolute;
+  width: 50%;
+  text-align: center;
+  left: 25%;
+  right: 25%;
+}
+
 .btn-light,
 .bg-light,
 .badge-light,
