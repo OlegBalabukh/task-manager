@@ -55,16 +55,20 @@ export const addTask = ({ name, description }) => async (dispatch) => {
   }
 };
 
-export const updateTask = ({ _id, name, description, done }) => async (
-  dispatch
-) => {
+export const updateTask = ({
+  _id,
+  name,
+  description,
+  done,
+  sharedBy,
+}) => async (dispatch) => {
   const config = {
     headers: {
       'Content-Type': 'application/json',
     },
   };
 
-  const body = JSON.stringify({ name, description, done });
+  const body = JSON.stringify({ name, description, done, sharedBy });
 
   try {
     const res = await axios.post(`/api/tasks/${_id}`, body, config);

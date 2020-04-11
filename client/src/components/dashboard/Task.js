@@ -32,7 +32,7 @@ const Task = ({ task, updateTask, deleteTask, shareTask }) => {
 
   const handleEditedTask = (edited) => {
     setEdit(false);
-    updateTask(edited);
+    updateTask({ ...edited, sharedBy });
   };
 
   const handleSharedEmail = (email) => {
@@ -41,7 +41,7 @@ const Task = ({ task, updateTask, deleteTask, shareTask }) => {
   };
 
   const changeTaskStatus = () => {
-    updateTask({ ...task, done: !done });
+    updateTask({ ...task, done: !done, sharedBy });
   };
 
   const onDelete = () => {

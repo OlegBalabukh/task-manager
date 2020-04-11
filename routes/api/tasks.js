@@ -60,14 +60,14 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, description, done } = req.body;
+    const { name, description, done, sharedBy } = req.body;
 
     // Build task object
     const taskFields = {};
-    taskFields.user = req.user.id;
+    if (!sharedBy) taskFields.user = req.user.id;
     if (name) taskFields.name = name;
-    if (typeof done === 'boolean') taskFields.done = done;
     if (description) taskFields.description = description;
+    if (typeof done === 'boolean') taskFields.done = done;
 
     try {
       let task = await Task.findById(req.params.id);
@@ -80,7 +80,17 @@ router.post(
           { new: true }
         );
 
-        return res.json(task);
+        // Check which task is updated
+
+        // User task
+        if (task.user === req.user.id) {
+          return res.json(task);
+        }
+
+        // Shared Task
+        const { _id, name, description, done, date } = task;
+        const sharedTask = { _id, name, description, done, sharedBy, date };
+        return res.json(sharedTask);
       }
 
       // Create

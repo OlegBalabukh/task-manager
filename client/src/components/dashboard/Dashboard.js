@@ -10,7 +10,7 @@ import AddNewTask from './AddNewTask';
 const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
   useEffect(() => {
     getUserTasks();
-  }, []);
+  }, [getUserTasks]);
 
   const [showSpinner, setShowSpinner] = useState(true);
   setTimeout(() => setShowSpinner(false), 800);
