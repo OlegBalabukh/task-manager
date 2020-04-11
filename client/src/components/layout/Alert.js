@@ -9,7 +9,8 @@ const Alert = ({ alerts }) =>
     <div
       key={alert.id}
       className={`alert alert-${alert.alertType} ${
-        alert.alertType === 'success' && 'alert-absolute'
+        (alert.alertType === 'success' || alert.alertType === 'task-danger') &&
+        'alert-absolute'
       }`}
     >
       {alert.msg}

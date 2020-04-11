@@ -10,7 +10,7 @@ import useStyles from './MaterialStyles';
 
 import TaskForm from './TaskForm';
 import ShareForm from './ShareForm';
-import { updateTask, deleteTask } from '../../actions/tasks';
+import { updateTask, deleteTask, shareTask } from '../../actions/tasks';
 
 const theme = createMuiTheme({
   palette: {
@@ -18,12 +18,12 @@ const theme = createMuiTheme({
   },
 });
 
-const Task = ({ task, updateTask, deleteTask }) => {
+const Task = ({ task, updateTask, deleteTask, shareTask }) => {
   const [isFocused, setFocus] = useState(false);
   const [edit, setEdit] = useState(false);
   const [share, setShare] = useState(false);
   const classes = useStyles();
-  const { _id, name, description, date, done } = task;
+  const { _id, name, description, date, done, sharedBy } = task;
   const statusButton = done ? 'Open' : 'Close';
 
   const handleShow = () => {
@@ -36,9 +36,8 @@ const Task = ({ task, updateTask, deleteTask }) => {
   };
 
   const handleSharedEmail = (email) => {
-    console.log(email);
     setShare(false);
-    // shareTask(_id, email);
+    shareTask(_id, email);
   };
 
   const changeTaskStatus = () => {
@@ -63,6 +62,7 @@ const Task = ({ task, updateTask, deleteTask }) => {
         <h6 className='taskName'>{name}</h6>
         {done && <span className='badge-closed'>closed</span>}
         <div className='date'>
+          {sharedBy && <span className='shared-by'>shared by {sharedBy}</span>}
           <Moment date={date} format='YYYY-MM-DD hh:mm:ss' />
         </div>
       </div>
@@ -89,14 +89,16 @@ const Task = ({ task, updateTask, deleteTask }) => {
             >
               DELETE
             </Button>
-            <Button
-              variant='outlined'
-              color='default'
-              className={classes.button}
-              onClick={onShare}
-            >
-              Share with
-            </Button>
+            {!sharedBy && (
+              <Button
+                variant='outlined'
+                color='default'
+                className={classes.button}
+                onClick={onShare}
+              >
+                SHARE WITH
+              </Button>
+            )}
             <ThemeProvider theme={theme}>
               <Button
                 variant='outlined'
@@ -135,6 +137,7 @@ Task.propTypes = {
   task: PropTypes.object.isRequired,
   updateTask: PropTypes.func.isRequired,
   deleteTask: PropTypes.func.isRequired,
+  shareTask: PropTypes.func.isRequired,
 };
 
-export default connect(null, { updateTask, deleteTask })(Task);
+export default connect(null, { updateTask, deleteTask, shareTask })(Task);

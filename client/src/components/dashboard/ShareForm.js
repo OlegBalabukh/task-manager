@@ -79,6 +79,10 @@ const ShareForm = ({ closeForm, handleInput, share }) => {
   );
 };
 
-ShareForm.propTypes = {};
+ShareForm.propTypes = {
+  closeForm: PropTypes.func.isRequired,
+  handleInput: PropTypes.func.isRequired,
+  share: PropTypes.bool.isRequired,
+};
 
 export default ShareForm;

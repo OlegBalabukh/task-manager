@@ -123,7 +123,8 @@ img {
 .btn-danger,
 .bg-danger,
 .badge-danger,
-.alert-danger {
+.alert-danger,
+.alert-task-danger {
   background: var(--danger-color);
   color: #fff;
 }
@@ -276,6 +277,13 @@ button {
   margin-right: 15px;
   font-size: 0.8em;
   color: #737373;
+}
+
+.shared-by {
+  margin-right: 20px;
+  font-size: 1em;
+  color: var(--primary-color);
+  font-weight: 600;
 }
 
 .description {

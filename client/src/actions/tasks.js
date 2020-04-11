@@ -84,6 +84,29 @@ export const updateTask = ({ _id, name, description, done }) => async (
   }
 };
 
+export const shareTask = (_id, email) => async (dispatch) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+
+  const body = JSON.stringify({ email });
+
+  try {
+    const res = await axios.post(`/api/tasks/share/${_id}`, body, config);
+
+    res.data.type === 'error'
+      ? dispatch(setAlert(res.data.msg, 'task-danger'))
+      : dispatch(setAlert(res.data.msg, 'success'));
+  } catch (err) {
+    dispatch({
+      type: TASKS_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status },
+    });
+  }
+};
+
 export const deleteTask = (id, name) => async (dispatch) => {
   try {
     const res = await axios.delete(`/api/tasks/${id}`);

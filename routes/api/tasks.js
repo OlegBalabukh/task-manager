@@ -31,7 +31,7 @@ router.get('/', auth, async (req, res) => {
       })
     );
 
-    if (!tasks.length) {
+    if (!tasks.length && !sharedTasks.length) {
       return res.status(400).json({ msg: 'There are no tasks for this user' });
     }
 
@@ -109,14 +109,16 @@ router.post(
 
     try {
       let task = await Task.findById(req.params.id);
+
       const getAccessUser = await User.findOne({
         email: req.body.email,
       }).select('id, name');
 
       if (!getAccessUser) {
-        return res
-          .status(400)
-          .json({ msg: 'This user is not registered in the system' });
+        return res.json({
+          msg: 'This user is not registered in the system',
+          type: 'error',
+        });
       }
 
       // Build a shared user object
@@ -131,9 +133,10 @@ router.post(
         ).length > 0;
 
       if (alreadyShared) {
-        return res
-          .status(400)
-          .json({ msg: 'This task was already shared with this user' });
+        return res.json({
+          msg: 'This task was already shared with this user',
+          type: 'error',
+        });
       }
 
       task.access.unshift(newShare);
@@ -157,7 +160,25 @@ router.delete('/:id', auth, async (req, res) => {
 
     const tasks = await Task.find({ user: req.user.id }).sort({ date: -1 });
 
-    res.json(tasks);
+    const sharedTasks = await Task.find({ 'access.user': req.user.id }).select(
+      `-access`
+    );
+
+    const shared = await Promise.all(
+      sharedTasks.map(async ({ done, _id, user, name, description, date }) => {
+        const whoShared = await User.findById(user);
+        return {
+          done,
+          _id,
+          name,
+          description,
+          date,
+          sharedBy: whoShared.name,
+        };
+      })
+    );
+
+    res.json(tasks.concat(shared));
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
