@@ -16,14 +16,12 @@ const Task = require('../../models/Task');
 router.post(
   '/',
   [
-    check('name', 'Name is required')
-      .not()
-      .isEmpty(),
+    check('name', 'Name is required').not().isEmpty(),
     check('email', 'Please include a valid email').isEmail(),
     check(
       'password',
       'Please enter a password with 6 or more characters'
-    ).isLength({ min: 6 })
+    ).isLength({ min: 6 }),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -46,7 +44,7 @@ router.post(
       user = new User({
         name,
         email,
-        password
+        password,
       });
 
       // Encrypt password
@@ -59,8 +57,8 @@ router.post(
       // Return jsonwebtoken
       const payload = {
         user: {
-          id: user.id
-        }
+          id: user.id,
+        },
       };
 
       jwt.sign(
@@ -79,7 +77,7 @@ router.post(
   }
 );
 
-// @route     DELETE api/user
+// @route     DELETE api/users
 // @desc      Delete user and its tasks
 // @access    Private
 router.delete('/', auth, async (req, res) => {
@@ -89,7 +87,22 @@ router.delete('/', auth, async (req, res) => {
     // Remove user's tasks
     await Task.deleteMany({ user: req.user.id });
 
-    res.json({ msg: 'User deleted' });
+    // Remove user from 'access' array in shared tasks
+    const sharedTasks = await Task.find({ 'access.user': req.user.id });
+
+    sharedTasks.forEach(async (task) => {
+      const updatedAccessArray = task.access.filter(
+        ({ user }) => user.toString() !== req.user.id
+      );
+      // Update
+      await Task.findOneAndUpdate(
+        { _id: task._id },
+        { $set: { access: updatedAccessArray } },
+        { new: true }
+      );
+    });
+
+    res.json({ msg: 'Deleted user and his tasks' });
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
