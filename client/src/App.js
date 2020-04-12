@@ -8,12 +8,7 @@ import setAuthToken from './utils/setAuthToken';
 
 import Navbar from './components/layout/Navbar';
 import Landing from './components/layout/Landing';
-import NotFoundPage from './components/layout/NotFoundPage';
-import Signup from './components/auth/Signup';
-import Login from './components/auth/Login';
-import Alert from './components/layout/Alert';
-import Dashboard from './components/dashboard/Dashboard';
-import PrivateRoute from './components/routing/PrivateRoute';
+import Routes from './components/routing/Routes';
 import './App.css';
 
 if (localStorage.token) {
@@ -30,16 +25,10 @@ const App = () => {
       <Router>
         <>
           <Navbar />
-          <Route exact path='/' component={Landing} />
-          <section className='container'>
-            <Alert />
-            <Switch>
-              <Route exact path='/signup' component={Signup} />
-              <Route exact path='/login' component={Login} />
-              <PrivateRoute exact path='/dashboard' component={Dashboard} />
-              <Route path='/' component={NotFoundPage} />
-            </Switch>
-          </section>
+          <Switch>
+            <Route exact path='/' component={Landing} />
+            <Route component={Routes} />
+          </Switch>
         </>
       </Router>
     </Provider>
