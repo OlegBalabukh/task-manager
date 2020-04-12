@@ -48,8 +48,7 @@ const ShareForm = ({ closeForm, handleInput, share }) => {
           <TextField
             id='standard-basic'
             className={classes.textFieldTaskName}
-            label='e-mail'
-            margin='normal'
+            label='email'
             autoComplete='off'
             onChange={onChange}
             error={error}

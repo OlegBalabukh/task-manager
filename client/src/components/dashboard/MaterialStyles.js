@@ -5,8 +5,8 @@ export default makeStyles((theme) => ({
     fontWeight: 600,
     marginLeft: theme.spacing(2),
   },
-  newTaskButton: {
-    margin: theme.spacing(2),
+  dashboardButton: {
+    margin: theme.spacing(2, 0, 2),
     fontWeight: 600,
   },
   container: {

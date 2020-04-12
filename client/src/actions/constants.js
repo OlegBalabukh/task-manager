@@ -12,6 +12,9 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 
 export const LOGOUT = 'LOGOUT';
 
+export const USER_DELETED = 'USER_DELETED';
+export const FAILED_USER_DELETE = 'FAILED_USER_DELETE';
+
 export const GET_TASKS = 'GET_TASKS';
 export const CLEAR_TASKS = 'CLEAR_TASKS';
 export const TASKS_ERROR = 'TASKS_ERROR';

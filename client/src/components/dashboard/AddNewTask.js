@@ -27,10 +27,10 @@ const AddNewTask = ({ addTask }) => {
   };
 
   return (
-    <div>
+    <div className='text-right'>
       <Button
         onClick={openForm}
-        className={classes.newTaskButton}
+        className={classes.dashboardButton}
         variant='outlined'
         color='secondary'
       >

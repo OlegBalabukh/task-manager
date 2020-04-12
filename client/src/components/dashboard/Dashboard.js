@@ -6,6 +6,7 @@ import { getUserTasks } from '../../actions/tasks';
 import Spinner from '../layout/Spinner';
 import Task from './Task';
 import AddNewTask from './AddNewTask';
+import DeleteForm from './DeleteForm';
 
 const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
   useEffect(() => {
@@ -24,9 +25,7 @@ const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
       {!userTasks && (
         <p>You have not yet added any tasks, please add the first one</p>
       )}
-      <span className='text-center'>
-        <AddNewTask />
-      </span>
+      <AddNewTask />
     </>
   );
 
@@ -36,7 +35,10 @@ const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
         showSpinner ? (
           <Spinner />
         ) : (
-          welcomeBlock
+          <>
+            {welcomeBlock}
+            <DeleteForm />
+          </>
         )
       ) : (
         <>
@@ -44,6 +46,7 @@ const Dashboard = ({ getUserTasks, auth: { user }, tasks: { userTasks } }) => {
           {userTasks.map((task) => (
             <Task key={task.date} task={task} />
           ))}
+          <DeleteForm />
         </>
       )}
     </>

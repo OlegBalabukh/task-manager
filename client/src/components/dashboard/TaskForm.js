@@ -65,7 +65,6 @@ const TaskForm = ({ id, name, description, edit, closeForm, handleInput }) => {
             className={classes.textFieldTaskName}
             label='task name'
             name='name'
-            margin='normal'
             autoComplete='off'
             onChange={handleEdit}
             defaultValue={name}
@@ -77,7 +76,6 @@ const TaskForm = ({ id, name, description, edit, closeForm, handleInput }) => {
             className={classes.textFieldDescription}
             label='description'
             name='description'
-            margin='normal'
             multiline={true}
             onChange={handleEdit}
             defaultValue={description}

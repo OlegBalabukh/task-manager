@@ -9,6 +9,8 @@ import {
   LOGIN_FAIL,
   LOGOUT,
   CLEAR_TASKS,
+  USER_DELETED,
+  FAILED_USER_DELETE,
 } from './constants';
 import { setAlert } from './alert';
 import setAuthToken from '../utils/setAuthToken';
@@ -97,4 +99,15 @@ export const loginUser = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
   dispatch({ type: CLEAR_TASKS });
   dispatch({ type: LOGOUT });
+};
+
+export const deleteUser = () => async (dispatch) => {
+  try {
+    await axios.delete(`/api/users`);
+    dispatch({ type: USER_DELETED });
+    dispatch({ type: CLEAR_TASKS });
+  } catch (err) {
+    dispatch(setAlert(err.response.statusText, 'danger'));
+    dispatch({ type: FAILED_USER_DELETE });
+  }
 };

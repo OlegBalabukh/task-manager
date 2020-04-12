@@ -4,19 +4,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Button from '@material-ui/core/Button';
-import { green } from '@material-ui/core/colors';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import useStyles from './MaterialStyles';
 
 import TaskForm from './TaskForm';
 import ShareForm from './ShareForm';
 import { updateTask, deleteTask, shareTask } from '../../actions/tasks';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: green,
-  },
-});
 
 const Task = ({ task, updateTask, deleteTask, shareTask }) => {
   const [isFocused, setFocus] = useState(false);
@@ -70,7 +62,7 @@ const Task = ({ task, updateTask, deleteTask, shareTask }) => {
         <div className='description'>
           <div className='descHeader'>Description</div>
           <div>{description}</div>
-          <div className='task-buttons'>
+          <div className='task-buttons m'>
             {!done && (
               <Button
                 variant='outlined'
@@ -99,16 +91,14 @@ const Task = ({ task, updateTask, deleteTask, shareTask }) => {
                 SHARE WITH
               </Button>
             )}
-            <ThemeProvider theme={theme}>
-              <Button
-                variant='outlined'
-                color='primary'
-                className={classes.button}
-                onClick={changeTaskStatus}
-              >
-                {statusButton}
-              </Button>
-            </ThemeProvider>
+            <Button
+              variant='outlined'
+              color='primary'
+              className={classes.button}
+              onClick={changeTaskStatus}
+            >
+              {statusButton}
+            </Button>
           </div>
           {edit && (
             <TaskForm

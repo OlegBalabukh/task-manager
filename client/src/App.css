@@ -66,6 +66,10 @@ img {
   text-align: center;
 }
 
+.text-right {
+  text-align: right;
+}
+
 .text-primary {
   color: var(--primary-color);
 }
@@ -79,6 +83,10 @@ img {
 }
 
 /* Margin */
+.m {
+  margin: 0.5rem;
+}
+
 .my-1 {
   margin: 1rem 0;
 }
@@ -106,23 +114,18 @@ img {
 
 .btn-dark,
 .bg-dark,
-.badge-dark,
 .alert-dark {
   background: var(--dark-color);
   color: #fff;
 }
 
 .btn-primary,
-.bg-primary,
-.badge-primary,
 .alert-primary {
   background-color: var(--primary-color);
   color: #fff;
 }
 
 .btn-danger,
-.bg-danger,
-.badge-danger,
 .alert-danger,
 .alert-task-danger {
   background: var(--danger-color);
@@ -130,8 +133,6 @@ img {
 }
 
 .btn-success,
-.bg-success,
-.badge-success,
 .alert-success {
   background: var(--success-color);
   color: #fff;
@@ -146,8 +147,6 @@ img {
 }
 
 .btn-light,
-.bg-light,
-.badge-light,
 .alert-light {
   background: var(--light-color);
   color: #333;
